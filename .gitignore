@@ -11,3 +11,4 @@ next-env.d.ts
 !.env.example
 .DS_Store
 .next-mac
+data/sauvegardes

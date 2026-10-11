@@ -13,7 +13,15 @@ let port = Int(info["RecapPort"] as? String ?? "") ?? 3217
 let nodePath = info["RecapNodePath"] as? String ?? "/usr/local/bin/node"
 let baseURL = URL(string: "http://localhost:\(port)")!
 
-final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate {
+/// Sauvegardes : iCloud Drive si disponible (copie hors du Mac), sinon à côté des données.
+let backupDir: URL = {
+  let icloud = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs")
+  return FileManager.default.fileExists(atPath: icloud.path)
+    ? icloud.appendingPathComponent("Recap — Sauvegardes")
+    : support.appendingPathComponent("sauvegardes")
+}()
+
+final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, WKUIDelegate, WKDownloadDelegate, WKScriptMessageHandler {
   var window: NSWindow!
   var web: WKWebView!
   var server: Process?
@@ -23,6 +31,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     buildMenu()
     let config = WKWebViewConfiguration()
     config.websiteDataStore = .default()
+    config.userContentController.add(self, name: "recapTheme")
     web = WKWebView(frame: .zero, configuration: config)
     web.navigationDelegate = self
     web.uiDelegate = self
@@ -70,6 +79,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     env["HOSTNAME"] = "127.0.0.1" // joignable uniquement depuis ce Mac
     env["DATABASE_FILE"] = support.appendingPathComponent("data/recap.db").path
     env["UPLOAD_DIR"] = support.appendingPathComponent("uploads").path
+    env["BACKUP_DIR"] = backupDir.path
     // Réglages facultatifs (SMTP, ANTHROPIC_API_KEY…) : ~/Library/Application Support/Recap/config.env
     if let extra = try? String(contentsOf: support.appendingPathComponent("config.env"), encoding: .utf8) {
       for line in extra.split(separator: "\n") {
@@ -135,6 +145,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     div div:first-child{color:#f3f2ee!important}}</style></body></html>
     """
     web.loadHTMLString(html, baseURL: nil)
+  }
+
+  // MARK: Thème choisi dans Recap → barre de titre et boîtes de dialogue natives
+
+  func userContentController(_ controller: WKUserContentController, didReceive message: WKScriptMessage) {
+    guard message.name == "recapTheme", let pref = message.body as? String else { return }
+    window.appearance = pref == "light" ? NSAppearance(named: .aqua) : pref == "dark" ? NSAppearance(named: .darkAqua) : nil
   }
 
   // MARK: Navigation : liens externes dans le navigateur, téléchargements dans ~/Téléchargements

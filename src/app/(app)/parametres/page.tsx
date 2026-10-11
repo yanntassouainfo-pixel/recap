@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { createHash } from "node:crypto";
 import { desc, eq } from "drizzle-orm";
-import { Download, Landmark, Lock, ShieldCheck, Trash2 } from "lucide-react";
+import { CloudUpload, Download, Landmark, Lock, ShieldCheck, Trash2 } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { db, schema } from "@/lib/db";
 import { getSettings, visibleCompanies } from "@/lib/data";
@@ -11,17 +11,22 @@ import { FIXED_PEGS } from "@/lib/finance/fx";
 import { Badge, Card, CardHeader, Notice, PageHeader, Table, Td, Th, buttonClass, cx } from "@/components/ui";
 import { CategoryDialog, DeleteAccountForm, PasswordForm, PreferencesForm, ProfileForm, RateForm, SenderDialog, TestSmtpButton } from "@/components/settings/forms";
 import { ConfirmActionButton } from "@/components/action-dialog";
+import { ThemeChoice } from "@/components/theme";
+import { BackupNowButton, RestoreButton } from "@/components/settings/backups";
+import { backupLocationLabel, BACKUPS_KEPT, lastBackupError, listBackups } from "@/lib/backup";
 import { deleteRate, deleteSender, revokeOtherSessions } from "@/app/actions/settings";
 
 export const metadata = { title: "Paramètres" };
 
 const SECTIONS = [
   ["preferences", "Préférences financières"],
+  ["apparence", "Apparence"],
   ["devises", "Devises & taux"],
   ["categories", "Catégories"],
   ["emails", "Emails"],
   ["banque", "Connexion bancaire"],
   ["securite", "Compte & sécurité"],
+  ["sauvegardes", "Sauvegardes"],
   ["donnees", "Mes données"],
 ];
 
@@ -39,8 +44,17 @@ const ENTITY_LABELS: Record<string, string> = {
   goal: "Objectif", allocation_rule: "Règle de répartition",
 };
 
+const BACKUP_KIND = { auto: "Automatique", manuelle: "Manuelle", "avant-restauration": "Avant restauration" } as const;
+const formatDateTime = (iso: string) =>
+  new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+const formatSize = (bytes: number) => (bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} Ko` : `${(bytes / 1024 / 1024).toFixed(1).replace(".", ",")} Mo`);
+
 export default async function SettingsPage() {
   const user = await requireUser();
+  const backups = listBackups();
+  const lastBackup = backups[0];
+  const backupError = lastBackupError();
+  const canRestore = db.select({ id: schema.users.id }).from(schema.users).limit(2).all().length === 1;
   const settings = getSettings(user.id);
   const today = todayISO();
   const rates = db.select().from(schema.exchangeRates).where(eq(schema.exchangeRates.userId, user.id)).orderBy(desc(schema.exchangeRates.date)).all();
@@ -69,6 +83,11 @@ export default async function SettingsPage() {
           <Card id="preferences" className="scroll-mt-24">
             <CardHeader title="Préférences financières" description="Mode d'utilisation, devise de référence, espace personnel et seuil d'alerte." />
             <div className="px-5 pb-5"><PreferencesForm settings={settings} /></div>
+          </Card>
+
+          <Card id="apparence" className="scroll-mt-24">
+            <CardHeader title="Apparence" description="Mode clair pour un environnement lumineux, mode sombre, ou automatique pour suivre le réglage de votre Mac." />
+            <div className="px-5 pb-5"><ThemeChoice /></div>
           </Card>
 
           <Card id="devises" className="scroll-mt-24">
@@ -204,6 +223,40 @@ export default async function SettingsPage() {
                   </table>
                 </div>
               </div>
+            </div>
+          </Card>
+
+          <Card id="sauvegardes" className="scroll-mt-24">
+            <CardHeader title="Sauvegardes" description="Une copie complète de vos données est faite automatiquement chaque jour."
+              action={<BackupNowButton />} />
+            <div className="space-y-4 px-5 pb-5">
+              <div className={cx("flex items-start gap-3 rounded-xl p-4", backupError ? "bg-bad-soft/70" : lastBackup ? "bg-good-soft/60" : "bg-warn-soft/70")}>
+                <CloudUpload size={18} className={cx("mt-0.5 shrink-0", backupError ? "text-bad" : lastBackup ? "text-good" : "text-warn")} aria-hidden />
+                <div className="text-[13px]">
+                  <div className="font-medium text-ink">
+                    {backupError ? "La dernière sauvegarde automatique a échoué" : lastBackup ? `Dernière sauvegarde : ${formatDateTime(lastBackup.createdAt)}` : "Aucune sauvegarde pour l'instant"}
+                  </div>
+                  <div className="mt-0.5 text-ink-2">
+                    {backupError ? backupError : lastBackup ? `Emplacement : ${backupLocationLabel()}` : "La première sera faite dans quelques secondes, ou dès maintenant avec « Sauvegarder maintenant »."}
+                  </div>
+                  <div className="mt-0.5 text-ink-3">Base de données et documents envoyés · les {BACKUPS_KEPT} dernières sauvegardes sont conservées.</div>
+                </div>
+              </div>
+              {backups.length > 0 && (
+                <ul className="divide-y divide-line rounded-xl border border-line">
+                  {backups.slice(0, 8).map((b) => (
+                    <li key={b.name} className="flex items-center gap-3 px-4 py-2.5 text-[13px]">
+                      <span className="flex-1 text-ink">{formatDateTime(b.createdAt)}</span>
+                      <Badge tone={b.kind === "auto" ? "neutral" : b.kind === "manuelle" ? "info" : "warn"}>{BACKUP_KIND[b.kind]}</Badge>
+                      <span className="hidden w-16 text-right text-ink-3 tabular sm:inline">{formatSize(b.size)}</span>
+                      {canRestore && <RestoreButton name={b.name} label={formatDateTime(b.createdAt)} />}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {!canRestore && backups.length > 0 && (
+                <p className="text-[12.5px] text-ink-3">La restauration depuis l&apos;application est réservée à une installation à un seul utilisateur.</p>
+              )}
             </div>
           </Card>
 

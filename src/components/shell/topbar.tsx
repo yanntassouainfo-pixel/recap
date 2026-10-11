@@ -8,6 +8,7 @@ import { LogoMark } from "@/components/logo";
 import { useQuick, type QuickKind } from "@/components/quick/provider";
 import { CommandPalette } from "./command-palette";
 import { logout } from "@/app/actions/auth";
+import { ThemeToggle } from "@/components/theme";
 
 export function Topbar({ scopeLabel, userName }: { scopeLabel: string; userName: string }) {
   const [palette, setPalette] = useState(false);
@@ -64,6 +65,7 @@ export function Topbar({ scopeLabel, userName }: { scopeLabel: string; userName:
               </div>
             )}
           </div>
+          <ThemeToggle />
           <div className="relative hidden lg:block">
             <button onClick={() => setMenu(menu === "user" ? null : "user")} className="flex size-9 items-center justify-center rounded-full bg-surface-3 text-[13px] font-semibold text-ink-2 hover:bg-line" aria-label="Compte">
               {userName.slice(0, 1).toUpperCase()}
