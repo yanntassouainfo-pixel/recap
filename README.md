@@ -25,6 +25,22 @@ npm run dev                  # http://localhost:3100
 Compte de démonstration (après `npm run db:seed`) : `demo@recap.local` / `demo-recap-2026`.
 Vous pouvez aussi créer votre propre compte depuis la page d'inscription.
 
+## Application Mac
+
+```bash
+zsh scripts/install-mac-app.sh
+```
+
+Installe **Recap.app** dans `/Applications` : une fenêtre native (Swift + WebKit) qui démarre le moteur Recap à
+l'ouverture et l'arrête en quittant. Il est joignable uniquement depuis ce Mac. Relancez le script pour mettre l'app à
+jour après une modification du code (quittez Recap avant).
+
+- Données de l'app : `~/Library/Application Support/Recap` (`data/`, `uploads/`), séparées de la base de développement.
+- Réglages facultatifs (SMTP, `ANTHROPIC_API_KEY`) : `~/Library/Application Support/Recap/config.env`.
+- Journal du moteur : `~/Library/Logs/Recap/serveur.log`.
+- Prérequis : Node.js et les outils de ligne de commande Xcode (`xcode-select --install`). Après une mise à jour
+  majeure de Node, relancez le script.
+
 ## Où sont gardées vos données
 
 Tout ce que vous saisissez est enregistré localement et conservé d'une session à l'autre :

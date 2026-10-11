@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2a28"/>
+      <stop offset="1" stop-color="#141413"/>
+    </linearGradient>
+  </defs>
+  <!-- Grille des icônes macOS : carré arrondi de 824 px centré, marge de 100 px -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)"/>
+  <g transform="translate(100 100) scale(25.75)">
+    <path d="M9 21.5V10.5h7.2a4.3 4.3 0 0 1 0 8.6H9" fill="none" stroke="#f5f4f0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="m16.4 19.1 4.9 4.9" stroke="#6d93f0" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -31,11 +31,14 @@ const hashToken = (token: string) => createHash("sha256").update(token).digest("
 export async function createSession(userId: string) {
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 86400000);
-  const ua = (await headers()).get("user-agent")?.slice(0, 200) ?? null;
+  const h = await headers();
+  const ua = h.get("user-agent")?.slice(0, 200) ?? null;
   db.insert(schema.sessions).values({ id: hashToken(token), userId, expiresAt: expiresAt.toISOString(), userAgent: ua }).run();
   db.delete(schema.sessions).where(lt(schema.sessions.expiresAt, new Date().toISOString())).run();
+  // Cookie « Secure » en production, sauf en HTTP local (app Mac) où la vue web le refuserait.
+  const localHttp = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(h.get("host") ?? "") && h.get("x-forwarded-proto") !== "https";
   (await cookies()).set(COOKIE, token, {
-    httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", expires: expiresAt,
+    httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" && !localHttp, path: "/", expires: expiresAt,
   });
 }
 
