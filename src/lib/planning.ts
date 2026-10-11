@@ -41,6 +41,7 @@ export function eventNature(e: Pick<ForecastEvent, "kind" | "certainty">): { lab
     case "opportunity": return e.certainty === "hypothetical"
       ? { label: "Opportunité non confirmée", tone: "neutral", certainty }
       : { label: "Accord signé, non facturé", tone: "accent", certainty };
+    case "income": return { label: "Recette prévue", tone: "accent", certainty };
     case "planned": return { label: "Dépense prévue", tone: "warn", certainty };
     case "recurring": return { label: "Charge récurrente", tone: "warn", certainty };
     default: return { label: "Événement", tone: "neutral", certainty };

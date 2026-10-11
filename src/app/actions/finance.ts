@@ -6,7 +6,7 @@ import { db, schema } from "@/lib/db";
 import { requireUser, audit } from "@/lib/auth";
 import { newId } from "@/lib/ids";
 import { accountOf, companyOf, formValues, isoDate, money, optStr, OwnershipError, ownedId, str } from "@/lib/guards";
-import { addDays, todayISO } from "@/lib/dates";
+import { addDays, formatDate, todayISO } from "@/lib/dates";
 import { formatMoney } from "@/lib/money";
 import { invoiceState } from "@/lib/finance/engine";
 import type { ActionState } from "@/lib/action-state";
@@ -35,6 +35,13 @@ async function attachReceipt(userId: string, form: FormData, meta: { name: strin
 
 /* ───────────────────────── Recettes directes ───────────────────────── */
 
+/** Même montant et devise, à 3 jours près, avec la même description : probablement une double saisie. */
+function findDuplicateIncome(userId: string, amount: number, currency: string, date: string, description: string) {
+  const candidates = db.select().from(schema.incomes).where(and(eq(schema.incomes.userId, userId), eq(schema.incomes.amount, amount), eq(schema.incomes.currency, currency))).all();
+  const norm = (s: string | null) => (s ?? "").toLowerCase().normalize("NFKD").replace(/[^a-z0-9]/g, "");
+  return candidates.find((c) => Math.abs(Date.parse(c.date) - Date.parse(date)) <= 3 * 86400000 && norm(c.description) === norm(description));
+}
+
 export async function createIncome(_: ActionState, form: FormData): Promise<ActionState> {
   const user = await requireUser();
   try {
@@ -52,6 +59,15 @@ export async function createIncome(_: ActionState, form: FormData): Promise<Acti
     if (!description) errors.description = ["Décrivez la recette en quelques mots."];
     if (account && account.companyId !== companyId) errors.accountId = ["Ce compte appartient à une autre structure."];
     if (Object.keys(errors).length) return { fieldErrors: errors, values: formValues(form) };
+    if (str(form, "confirmDuplicate") !== "1") {
+      const dup = findDuplicateIncome(user.id, amount!, currency, date!, description);
+      if (dup) {
+        return {
+          warning: `Doublon possible : « ${dup.description} » de ${formatMoney(dup.amount, dup.currency)} est déjà enregistrée le ${formatDate(dup.date)}. Enregistrez à nouveau pour confirmer qu'il s'agit d'une autre recette.`,
+          values: { ...formValues(form), confirmDuplicate: "1" },
+        };
+      }
+    }
     const id = newId("inc_");
     const activityId = ownedId(schema.activities, form.get("activityId"), user.id);
     const contactId = ownedId(schema.contacts, form.get("contactId"), user.id);
@@ -65,7 +81,12 @@ export async function createIncome(_: ActionState, form: FormData): Promise<Acti
     if (contactId) db.insert(schema.interactions).values({ id: newId("ix_"), userId: user.id, contactId, type: "payment_received", date: date!, title: `Recette enregistrée — ${formatMoney(amount!, currency)}`, refType: "income", refId: id }).run();
     audit(user.id, "income", id, "create", undefined, row);
     revalidateFinance();
-    return { ok: true, id, message: `Recette de ${formatMoney(amount!, currency)} enregistrée.` };
+    return {
+      ok: true, id,
+      message: date! > todayISO()
+        ? `Recette prévue de ${formatMoney(amount!, currency)} le ${formatDate(date!, "long")} : elle apparaît dans le prévisionnel.`
+        : `Recette de ${formatMoney(amount!, currency)} enregistrée.`,
+    };
   } catch (e) {
     if (e instanceof Error && e.message.startsWith("Fichier") || e instanceof Error && e.message.startsWith("Format")) return { error: e.message, values: formValues(form) };
     return handle(e, form);

@@ -367,7 +367,7 @@ export interface ForecastEvent {
   date: ISODate;
   amount: number; // base, signé
   label: string;
-  kind: "invoice" | "overdue_invoice" | "opportunity" | "planned" | "recurring";
+  kind: "invoice" | "overdue_invoice" | "opportunity" | "income" | "planned" | "recurring";
   certainty: "contractual" | "estimated" | "hypothetical";
   ref?: string;
 }
@@ -424,6 +424,12 @@ export function forecast(data: FinanceData, horizonDays: number, scenario: Scena
     }
   }
 
+  // Recettes directes saisies à une date future : absentes du solde actuel, attendues à leur date.
+  for (const i of data.incomes) {
+    if (!inScope(data, i.companyId) || i.date <= data.today) continue;
+    events.push({ date: i.date, amount: toBase(data, i.amount, i.currency, data.today).value, label: i.description, kind: "income", certainty: "estimated", ref: i.id });
+  }
+
   for (const u of upcomingOutflows(data, end)) {
     events.push({ date: u.date, amount: -u.amountBase, label: u.supplier ? `${u.label} · ${u.supplier}` : u.label, kind: u.kind, certainty: "contractual", ref: u.key });
   }
@@ -462,6 +468,7 @@ export function forecast(data: FinanceData, horizonDays: number, scenario: Scena
     scenario === "prudent" ? "Opportunités commerciales : non prises en compte." : scenario === "central"
       ? "Opportunités : seules celles marquées « gagnées » et non facturées, encaissées 30 jours après signature."
       : "Opportunités en cours pondérées par leur probabilité, encaissées 30 jours après la date de signature prévue.",
+    "Recettes saisies à une date future : encaissées à cette date.",
     "Dépenses prévues et charges récurrentes : 100 % à leur échéance.",
     `Charges récurrentes non confirmées depuis moins de ${UNCONFIRMED_LOOKBACK_DAYS} jours : considérées comme restant à payer aujourd'hui.`,
   ];

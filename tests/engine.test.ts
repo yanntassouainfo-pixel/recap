@@ -160,6 +160,17 @@ describe("charges récurrentes et prévisionnel", () => {
     expect(prudent.hypotheses.length).toBeGreaterThan(3);
   });
 
+  it("une recette datée dans le futur est prévue (prévisionnel), pas encore dans le solde", () => {
+    const inc = { id: "i1", companyId: "c1", accountId: "a1", activityId: null, contactId: null, categoryId: null, currency: "XOF", amount: 327_979, date: "2026-11-05", description: "Prestation ACCESS Menu", method: "cash" };
+    const data = emptyData({ incomes: [inc] });
+    const f = forecast(data, 60, "prudent");
+    expect(f.start).toBe(100_000);
+    expect(f.events).toContainEqual(expect.objectContaining({ date: "2026-11-05", amount: 327_979, kind: "income", certainty: "estimated" }));
+    expect(f.end).toBe(427_979);
+    expect(forecast(data, 20, "central").totalIn).toBe(0); // hors horizon
+    expect(forecast(emptyData({ incomes: [{ ...inc, date: "2026-10-01" }] }), 60, "central").start).toBe(427_979); // déjà reçue
+  });
+
   it("une opportunité n'est jamais comptée comme revenu certain", () => {
     const data = emptyData({ opportunities: [{ id: "o", contactId: "x", companyId: "c1", activityId: null, title: "Coaching", amount: 500_000, currency: "XOF", probability: 40, stage: "proposal_sent", expectedCloseDate: "2026-10-20" }] });
     expect(forecast(data, 90, "central").totalIn).toBe(0);

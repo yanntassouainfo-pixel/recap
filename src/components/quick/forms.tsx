@@ -94,6 +94,7 @@ export function IncomeForm({ options, onDone, preset }: { options: FormOptions; 
   const v = state.values ?? preset ?? {};
   const scoped = useCompanyScoped(options, v.companyId);
   const [accountId, setAccountId] = useState(v.accountId ?? "");
+  const [incomeDate, setIncomeDate] = useState(v.date ?? options.today);
   const account = scoped.accounts.find((a) => a.id === accountId) ?? scoped.accounts[0];
   const currency = account?.currency ?? scoped.company?.currency ?? options.baseCurrency;
   const fe = state.fieldErrors ?? {};
@@ -103,10 +104,12 @@ export function IncomeForm({ options, onDone, preset }: { options: FormOptions; 
       <p className="text-[12.5px] text-ink-3">Pour une recette encaissée sans facture. Pour un paiement de facture, utilisez « Enregistrer un paiement ».</p>
       <div className="grid gap-4 sm:grid-cols-[1.2fr_1fr]">
         <AmountField currency={currency} defaultValue={v.amount} error={fe.amount} autoFocus />
-        <Field label="Date d'encaissement" htmlFor="date" error={fe.date}>
-          <Input id="date" name="date" type="date" defaultValue={v.date ?? options.today} required className="h-12" />
+        <Field label="Date d'encaissement" htmlFor="date" error={fe.date}
+          hint={incomeDate > options.today ? "Date future : comptée comme recette prévue dans le prévisionnel, puis dans votre solde à cette date." : undefined}>
+          <Input id="date" name="date" type="date" value={incomeDate} onChange={(e) => setIncomeDate(e.target.value)} required className="h-12" />
         </Field>
       </div>
+      {v.confirmDuplicate && <input type="hidden" name="confirmDuplicate" value="1" />}
       <Field label="Description" htmlFor="description" error={fe.description}>
         <Input id="description" name="description" placeholder="Ex. Séance de coaching — M. Kouassi" defaultValue={v.description} required />
       </Field>
@@ -154,7 +157,7 @@ export function IncomeForm({ options, onDone, preset }: { options: FormOptions; 
       </Disclosure>
       <input type="hidden" name="currency" value={currency} />
       <div className="flex justify-end gap-2 pt-1">
-        <SubmitButton pendingLabel="Enregistrement…">Enregistrer la recette</SubmitButton>
+        <SubmitButton pendingLabel="Enregistrement…">{v.confirmDuplicate ? "Confirmer et enregistrer" : "Enregistrer la recette"}</SubmitButton>
       </div>
     </form>
   );
