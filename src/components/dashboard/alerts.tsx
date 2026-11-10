@@ -29,7 +29,7 @@ export function AlertList({ alerts, limit = 5 }: { alerts: Alert[]; limit?: numb
               </div>
             </div>
             <button onClick={() => { setHidden(new Set([...hidden, a.key])); start(() => dismissAlert(a.key)); }}
-              className="absolute right-3 top-3 rounded-md p-1 text-ink-3 opacity-0 transition hover:bg-surface-3 hover:text-ink group-hover:opacity-100 focus:opacity-100" aria-label="Masquer 7 jours" title="Masquer pendant 7 jours">
+              className="absolute right-3 top-3 rounded-md p-3 sm:p-1 text-ink-3 opacity-0 transition hover:bg-surface-3 hover:text-ink group-hover:opacity-100 focus:opacity-100" aria-label="Masquer 7 jours" title="Masquer pendant 7 jours">
               <X size={14} />
             </button>
           </li>

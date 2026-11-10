@@ -299,7 +299,7 @@ export function Composer({ data, initial }: { data: ComposerData; initial: Compo
           {docRows.length > 6 && (
             <div className="relative mb-2">
               <Search size={13} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-3" aria-hidden />
-              <input value={docQuery} onChange={(e) => setDocQuery(e.target.value)} placeholder="Filtrer les documents…" aria-label="Filtrer les documents" className="field-input h-8 pl-8 text-[12.5px]" />
+              <input value={docQuery} onChange={(e) => setDocQuery(e.target.value)} placeholder="Filtrer les documents…" aria-label="Filtrer les documents" className="field-input h-10 sm:h-8 pl-8 text-[12.5px]" />
             </div>
           )}
           {visibleDocs.length === 0 ? (

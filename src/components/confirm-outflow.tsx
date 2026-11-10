@@ -32,7 +32,7 @@ export function ConfirmOutflowButton({ item, compact, autoOpen }: { item: Outflo
   const [open, setOpen] = useState(!!autoOpen);
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className={compact ? cx("rounded-lg p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink") : buttonClass("secondary", "sm")} aria-label={`Confirmer le paiement : ${item.label}`} title="Confirmer le paiement">
+      <button type="button" onClick={() => setOpen(true)} className={compact ? cx("rounded-lg p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink") : buttonClass("secondary", "sm")} aria-label={`Confirmer le paiement : ${item.label}`} title="Confirmer le paiement">
         <Check size={compact ? 16 : 14} />{!compact && "Confirmer"}
       </button>
       <Modal open={open} onClose={() => setOpen(false)} title="Confirmer le paiement" description={`${item.label}${item.supplier ? ` · ${item.supplier}` : ""} — échéance du ${formatDate(item.originalDate)}`} size="sm">

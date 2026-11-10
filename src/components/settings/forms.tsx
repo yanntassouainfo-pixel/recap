@@ -125,7 +125,7 @@ export function RateForm({ baseCurrency, today }: { baseCurrency: string; today:
 export function CategoryDialog({ category, kind }: { category?: { id: string; name: string; nature: string; kind: string }; kind?: "income" | "expense" }) {
   return (
     <ActionDialog title={category ? "Modifier la catégorie" : kind === "income" ? "Nouvelle catégorie de revenus" : "Nouvelle catégorie de dépenses"} action={saveCategory} size="sm"
-      triggerClassName={category ? "rounded-md p-1 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("ghost", "sm")}
+      triggerClassName={category ? "rounded-md p-3 sm:p-1 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("ghost", "sm")}
       ariaLabel={category ? `Modifier ${category.name}` : undefined}
       trigger={category ? <Pencil size={13} /> : <><Plus size={14} /> Catégorie</>}>
       {(state) => (
@@ -152,7 +152,7 @@ export function SenderDialog({ companies, sender }: { companies: { id: string; n
   return (
     <ActionDialog title={sender ? "Modifier l'adresse d'expédition" : "Ajouter une adresse d'expédition"}
       description="Chaque structure envoie sous sa propre identité, pour éviter toute confusion entre vos marques." action={saveSender}
-      triggerClassName={sender ? "rounded-md p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("secondary", "sm")}
+      triggerClassName={sender ? "rounded-md p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("secondary", "sm")}
       ariaLabel={sender ? `Modifier ${sender.fromEmail}` : undefined}
       trigger={sender ? <Pencil size={14} /> : <><Plus size={14} /> Adresse d&apos;expédition</>}>
       {(state) => {

@@ -120,7 +120,7 @@ export function MobileNav({ scopeSwitcher }: { scopeSwitcher: React.ReactNode })
       <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-line bg-bg/95 px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur lg:hidden" aria-label="Navigation mobile">
         {items.map((i) =>
           i ? (
-            <Link key={i.href} href={i.href} className={cx("flex w-16 flex-col items-center gap-0.5 text-[10.5px] font-medium", isActive(pathname, i.href) ? "text-ink" : "text-ink-3")}>
+            <Link key={i.href} href={i.href} className={cx("flex w-16 flex-col items-center gap-0.5 text-[11px] font-medium", isActive(pathname, i.href) ? "text-ink" : "text-ink-3")}>
               <i.icon size={21} strokeWidth={isActive(pathname, i.href) ? 2.1 : 1.7} aria-hidden />
               {i.label}
             </Link>
@@ -130,7 +130,7 @@ export function MobileNav({ scopeSwitcher }: { scopeSwitcher: React.ReactNode })
             </button>
           ),
         )}
-        <button onClick={() => setMore(true)} className="flex w-16 flex-col items-center gap-0.5 text-[10.5px] font-medium text-ink-3">
+        <button onClick={() => setMore(true)} className="flex w-16 flex-col items-center gap-0.5 text-[11px] font-medium text-ink-3">
           <MoreHorizontal size={21} aria-hidden />
           Plus
         </button>
@@ -141,7 +141,7 @@ export function MobileNav({ scopeSwitcher }: { scopeSwitcher: React.ReactNode })
           <div className="absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto rounded-t-3xl bg-surface p-5 pb-[max(env(safe-area-inset-bottom),20px)] animate-pop-in" onClick={(e) => e.stopPropagation()}>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-[16px] font-semibold">{quick ? "Action rapide" : "Menu"}</h2>
-              <button onClick={() => { setMore(false); setQuick(false); }} className="rounded-lg p-2 text-ink-3" aria-label="Fermer"><X size={18} /></button>
+              <button onClick={() => { setMore(false); setQuick(false); }} className="rounded-lg p-3 sm:p-2 text-ink-3" aria-label="Fermer"><X size={18} /></button>
             </div>
             {quick ? (
               <div className="grid gap-2">

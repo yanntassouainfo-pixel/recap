@@ -32,7 +32,7 @@ export function Modal({ open, onClose, title, description, children, size = "md"
               <h2 className="text-[17px] font-semibold tracking-[-0.01em]">{title}</h2>
               {description && <p className="mt-0.5 text-[13px] text-ink-3">{description}</p>}
             </div>
-            <button type="button" onClick={onClose} className="-mr-2 -mt-1 rounded-lg p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" aria-label="Fermer">
+            <button type="button" onClick={onClose} className="-mr-2 -mt-1 rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" aria-label="Fermer">
               <X size={18} />
             </button>
           </div>

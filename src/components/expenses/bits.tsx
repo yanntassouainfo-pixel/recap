@@ -32,7 +32,7 @@ export function DateChip({ iso, late }: { iso: string; late?: boolean }) {
   return (
     <div className={cx("flex w-11 shrink-0 flex-col items-center rounded-lg py-1", late ? "bg-warn-soft text-warn" : "bg-surface-3 text-ink-2")} aria-hidden>
       <span className="text-[15px] font-semibold leading-none tabular">{day}</span>
-      <span className="text-[10.5px] leading-tight">{month}</span>
+      <span className="text-[11px] leading-tight">{month}</span>
     </div>
   );
 }
@@ -44,10 +44,10 @@ export function Pager({ page, pageCount, total, href, noun }: { page: number; pa
       <span>Page {page} sur {pageCount} · {total} {noun}</span>
       <div className="flex gap-1.5">
         {page > 1 ? (
-          <Link href={href(page - 1)} scroll={false} className="inline-flex h-8 items-center gap-1 rounded-lg border border-line-2 bg-surface px-2.5 font-medium text-ink-2 hover:text-ink"><ChevronLeft size={14} /> Précédente</Link>
+          <Link href={href(page - 1)} scroll={false} className="inline-flex h-10 sm:h-8 items-center gap-1 rounded-lg border border-line-2 bg-surface px-2.5 font-medium text-ink-2 hover:text-ink"><ChevronLeft size={14} /> Précédente</Link>
         ) : null}
         {page < pageCount ? (
-          <Link href={href(page + 1)} scroll={false} className="inline-flex h-8 items-center gap-1 rounded-lg border border-line-2 bg-surface px-2.5 font-medium text-ink-2 hover:text-ink">Suivante <ChevronRight size={14} /></Link>
+          <Link href={href(page + 1)} scroll={false} className="inline-flex h-10 sm:h-8 items-center gap-1 rounded-lg border border-line-2 bg-surface px-2.5 font-medium text-ink-2 hover:text-ink">Suivante <ChevronRight size={14} /></Link>
         ) : null}
       </div>
     </nav>

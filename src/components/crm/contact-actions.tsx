@@ -69,7 +69,7 @@ export function FollowUpControl({ id, current, today }: { id: string; current: s
     <form className="flex flex-wrap items-end gap-2" onSubmit={(e) => { e.preventDefault(); if (/^\d{4}-\d{2}-\d{2}$/.test(date)) save(date); }}>
       <label className="grid gap-1 text-[12px] font-medium text-ink-2">
         Prochaine relance
-        <Input type="date" value={date} min={today} onChange={(e) => setDate(e.target.value)} className="h-8 w-[150px] text-[13px]" aria-label="Date de la prochaine relance" />
+        <Input type="date" value={date} min={today} onChange={(e) => setDate(e.target.value)} className="h-10 sm:h-8 w-[150px] text-[13px]" aria-label="Date de la prochaine relance" />
       </label>
       <button type="submit" disabled={pending || !date || date === current} className={buttonClass("secondary", "sm")}>
         {pending ? <Loader2 size={14} className="animate-spin" aria-hidden /> : <BellRing size={14} aria-hidden />} Programmer

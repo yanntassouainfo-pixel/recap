@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:seed": "tsx scripts/seed.ts",
-    "db:reset": "rm -f data/recap.db data/recap.db-* && tsx scripts/seed.ts"
+    "db:reset": "rm -f data/recap.db data/recap.db-* && tsx scripts/seed.ts",
+    "reset-password": "tsx scripts/reset-password.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",

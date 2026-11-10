@@ -59,7 +59,7 @@ export function StageMover({ id, stage, compact }: { id: string; stage: string; 
         </button>
       )}
       <select value={stage} disabled={pending} onChange={(e) => move(e.target.value)} aria-label="Étape de l'opportunité"
-        className="h-7 rounded-md border border-line bg-surface px-1.5 text-[12px] text-ink-2 hover:border-line-2">
+        className="h-10 sm:h-7 rounded-md border border-line bg-surface px-1.5 text-[12px] text-ink-2 hover:border-line-2">
         {STAGE_ORDER.map((s) => <option key={s} value={s}>{OPPORTUNITY_STAGES[s].label}</option>)}
       </select>
       {pending && <Loader2 size={13} className="animate-spin text-ink-3" aria-label="Déplacement en cours" />}

@@ -31,7 +31,7 @@ export function ClientFilters({ types, activities }: { types: { key: string; lab
       <div className="-mx-1 flex gap-1 overflow-x-auto px-1" role="tablist" aria-label="Type de fiche">
         {types.map((t) => (
           <button key={t.key} type="button" role="tab" aria-selected={type === t.key} onClick={() => push({ type: t.key === "actifs" ? null : t.key })}
-            className={cx("flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+            className={cx("flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2.5 sm:py-1.5 text-[12.5px] font-medium transition-colors",
               type === t.key ? "bg-ink text-bg" : "text-ink-3 hover:bg-surface-3 hover:text-ink-2")}>
             {t.label}
             <span className={cx("rounded-full px-1.5 text-[11px] tabular", type === t.key ? "bg-bg/15" : "bg-surface-3")}>{t.count}</span>
@@ -41,7 +41,7 @@ export function ClientFilters({ types, activities }: { types: { key: string; lab
       <div className="flex flex-wrap items-center gap-2">
         {activities.length > 1 && (
           <select value={sp.get("activite") ?? ""} onChange={(e) => push({ activite: e.target.value || null })} aria-label="Filtrer par activité"
-            className="field-input h-8 w-auto py-0 text-[12.5px]">
+            className="field-input h-10 sm:h-8 w-auto py-0 text-[12.5px]">
             <option value="">Toutes les activités</option>
             {activities.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
           </select>
@@ -55,7 +55,7 @@ export function ClientFilters({ types, activities }: { types: { key: string; lab
               if (timer.current) clearTimeout(timer.current);
               timer.current = setTimeout(() => push({ q: v.trim() || null }), 250);
             }}
-            className="field-input h-8 w-[220px] pl-8 pr-7 text-[12.5px]" />
+            className="field-input h-10 sm:h-8 w-[220px] pl-8 pr-7 text-[12.5px]" />
           {pending ? <Loader2 size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 animate-spin text-ink-3" aria-label="Chargement" />
             : q ? <button type="button" onClick={() => { setQ(""); push({ q: null }); }} className="absolute right-2 top-1/2 -translate-y-1/2 text-ink-3 hover:text-ink" aria-label="Effacer la recherche"><X size={13} /></button> : null}
         </div>

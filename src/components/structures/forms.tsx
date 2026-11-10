@@ -39,7 +39,7 @@ export function CompanyDialog({ company, variant }: { company?: CompanyData; var
       title={company ? `Modifier « ${company.name} »` : "Nouvelle structure"}
       description="Ces informations sont réutilisées automatiquement dans vos devis, factures, propositions et emails."
       action={saveCompany} size="lg"
-      triggerClassName={variant === "primary" ? buttonClass("primary", "md") : variant === "icon" ? "rounded-lg p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" : undefined}
+      triggerClassName={variant === "primary" ? buttonClass("primary", "md") : variant === "icon" ? "rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" : undefined}
       ariaLabel={company ? `Modifier ${company.name}` : undefined}
       trigger={company ? (variant === "icon" ? <Pencil size={15} /> : <><Pencil size={14} /> Modifier</>) : <><Plus size={16} /> Nouvelle structure</>}>
       {(state) => {
@@ -104,7 +104,7 @@ export function ActivityDialog({ companyId, currency, brands, activity }: { comp
       title={activity ? `Modifier « ${activity.name} »` : "Nouvelle activité"}
       description="Une activité est un métier ou une ligne de revenus que vous voulez analyser séparément."
       action={saveActivity}
-      triggerClassName={activity ? "rounded-lg p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("ghost", "sm")}
+      triggerClassName={activity ? "rounded-lg p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("ghost", "sm")}
       ariaLabel={activity ? `Modifier ${activity.name}` : undefined}
       trigger={activity ? <Pencil size={14} /> : <><Plus size={14} /> Activité</>}>
       {(state) => {
@@ -147,7 +147,7 @@ export function BrandDialog({ companyId, brand }: { companyId: string; brand?: {
       title={brand ? `Modifier l'enseigne « ${brand.name} »` : "Nouvelle enseigne"}
       description="Le nom commercial sous lequel une activité est exercée."
       action={saveBrand} size="sm"
-      triggerClassName={brand ? "rounded-lg p-1 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("ghost", "sm")}
+      triggerClassName={brand ? "rounded-lg p-3 sm:p-1 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("ghost", "sm")}
       ariaLabel={brand ? `Modifier ${brand.name}` : undefined}
       trigger={brand ? <Pencil size={13} /> : <><Plus size={14} /> Enseigne</>}>
       {(state) => (
@@ -171,7 +171,7 @@ export function AccountDialog({ companies, account, defaultCompanyId, today, pri
       title={account ? `Modifier « ${account.name} »` : "Nouveau compte"}
       description="Banque, caisse, mobile money… L'argent disponible est la somme de vos comptes."
       action={saveAccount}
-      triggerClassName={account ? "rounded-lg p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass(primary ? "primary" : "secondary", "sm")}
+      triggerClassName={account ? "rounded-lg p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass(primary ? "primary" : "secondary", "sm")}
       ariaLabel={account ? `Modifier ${account.name}` : undefined}
       trigger={account ? <Pencil size={14} /> : <><Plus size={14} /> Ajouter un compte</>}>
       {(state) => {

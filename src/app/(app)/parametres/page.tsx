@@ -107,7 +107,7 @@ export default async function SettingsPage() {
                     <Td>{formatDate(r.date)}</Td>
                     <Td className="tabular">1 {r.base} = {r.rate.toLocaleString("fr-FR", { maximumFractionDigits: 6 })} {r.quote}</Td>
                     <Td className="text-ink-2">{r.source}</Td>
-                    <Td align="right"><ConfirmActionButton run={deleteRate.bind(null, r.id)} confirm="Supprimer ce taux ? Les conversions utiliseront le taux disponible le plus proche." className="rounded-md p-1.5 text-ink-3 hover:bg-surface-3 hover:text-bad" done="Taux supprimé."><Trash2 size={14} aria-label="Supprimer" /></ConfirmActionButton></Td>
+                    <Td align="right"><ConfirmActionButton run={deleteRate.bind(null, r.id)} confirm="Supprimer ce taux ? Les conversions utiliseront le taux disponible le plus proche." className="rounded-md p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-bad" done="Taux supprimé."><Trash2 size={14} aria-label="Supprimer" /></ConfirmActionButton></Td>
                   </tr>
                 ))}
               </tbody>
@@ -165,7 +165,7 @@ export default async function SettingsPage() {
                         </div>
                         <Badge tone={s.authorized ? "good" : "warn"} dot>{s.authorized ? "Autorisée" : "Non autorisée"}</Badge>
                         <SenderDialog companies={companies.map((x) => ({ id: x.id, name: x.name, email: x.email }))} sender={s} />
-                        <ConfirmActionButton run={deleteSender.bind(null, s.id)} confirm={`Supprimer l'adresse ${s.fromEmail} ?`} className="rounded-md p-1.5 text-ink-3 hover:bg-surface-3 hover:text-bad" done="Adresse supprimée."><Trash2 size={14} aria-label="Supprimer" /></ConfirmActionButton>
+                        <ConfirmActionButton run={deleteSender.bind(null, s.id)} confirm={`Supprimer l'adresse ${s.fromEmail} ?`} className="rounded-md p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-bad" done="Adresse supprimée."><Trash2 size={14} aria-label="Supprimer" /></ConfirmActionButton>
                       </li>
                     );
                   })}

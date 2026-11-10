@@ -12,6 +12,12 @@ let info = Bundle.main.infoDictionary ?? [:]
 let port = Int(info["RecapPort"] as? String ?? "") ?? 3217
 let nodePath = info["RecapNodePath"] as? String ?? "/usr/local/bin/node"
 let baseURL = URL(string: "http://localhost:\(port)")!
+/// Clé à usage local, nouvelle à chaque lancement : seule cette app peut ouvrir la réinitialisation du mot de passe.
+let localKey: String = {
+  var bytes = [UInt8](repeating: 0, count: 32)
+  _ = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+  return bytes.map { String(format: "%02x", $0) }.joined()
+}()
 
 /// Sauvegardes : iCloud Drive si disponible (copie hors du Mac), sinon à côté des données.
 let backupDir: URL = {
@@ -80,6 +86,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     env["DATABASE_FILE"] = support.appendingPathComponent("data/recap.db").path
     env["UPLOAD_DIR"] = support.appendingPathComponent("uploads").path
     env["BACKUP_DIR"] = backupDir.path
+    env["RECAP_LOCAL_KEY"] = localKey
     // Réglages facultatifs (SMTP, ANTHROPIC_API_KEY…) : ~/Library/Application Support/Recap/config.env
     if let extra = try? String(contentsOf: support.appendingPathComponent("config.env"), encoding: .utf8) {
       for line in extra.split(separator: "\n") {
@@ -238,6 +245,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     let app = NSMenu()
     app.addItem(item("À propos de Recap", #selector(NSApplication.orderFrontStandardAboutPanel(_:)), ""))
     app.addItem(.separator())
+    app.addItem(item("Réinitialiser le mot de passe…", #selector(resetPassword), ""))
+    app.addItem(.separator())
     app.addItem(item("Masquer Recap", #selector(NSApplication.hide(_:)), "h"))
     app.addItem(item("Masquer les autres", #selector(NSApplication.hideOtherApplications(_:)), "h", [.command, .option]))
     app.addItem(.separator())
@@ -275,6 +284,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
   @objc func goBack() { web.goBack() }
   @objc func goForward() { web.goForward() }
   @objc func goHome() { web.load(URLRequest(url: baseURL)) }
+  @objc func resetPassword() {
+    var c = URLComponents(url: baseURL.appendingPathComponent("mot-de-passe/local"), resolvingAgainstBaseURL: false)!
+    c.queryItems = [URLQueryItem(name: "cle", value: localKey)]
+    if let url = c.url { web.load(URLRequest(url: url)) }
+  }
   @objc func zoomReset() { web.pageZoom = 1 }
   @objc func zoomIn() { web.pageZoom = min(web.pageZoom + 0.1, 2) }
   @objc func zoomOut() { web.pageZoom = max(web.pageZoom - 0.1, 0.5) }

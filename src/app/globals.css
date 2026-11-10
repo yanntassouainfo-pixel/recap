@@ -156,6 +156,11 @@
 }
 
 @layer base {
+  /* Une cellule de grille peut devenir plus étroite que son contenu (textes tronqués, graphiques) :
+     sans cela, un nom long ou un graphique élargit toute la page sur téléphone. */
+  :where(.grid) > * {
+    min-width: 0;
+  }
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

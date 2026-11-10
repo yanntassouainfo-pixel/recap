@@ -133,7 +133,7 @@ export function InvoiceEditor({ options, initial, paid, paidCurrency }: {
             {!internal ? (
               <Field label="Client" error={fe("contactId")} htmlFor="contactId" className={brands.length ? "" : "sm:col-span-2"}
                 hint={<span className="inline-flex flex-wrap items-center gap-x-2">Absent de la liste ?
-                  <QuickButton kind="contact" preset={{ type: "client", companyId: v.companyId }} className="inline-flex items-center gap-1 font-medium text-accent hover:underline underline-offset-4"><UserPlus size={13} aria-hidden /> Créer un client</QuickButton>
+                  <QuickButton kind="contact" preset={{ type: "client", companyId: v.companyId }} className="inline-flex items-center gap-1 py-2.5 sm:py-0 font-medium text-accent hover:underline underline-offset-4"><UserPlus size={13} aria-hidden /> Créer un client</QuickButton>
                 </span>}>
                 <Select id="contactId" name="contactId" value={v.contactId} onChange={(e) => set("contactId", e.target.value)}>
                   <option value="">Choisir un client…</option>
@@ -190,7 +190,7 @@ export function InvoiceEditor({ options, initial, paid, paidCurrency }: {
                       <span className="text-[11.5px] text-ink-3 md:hidden">Montant HT</span>
                       <span className="tabular text-[13.5px] font-medium text-ink">{amt != null ? m(amt) : "—"}</span>
                     </div>
-                    <button type="button" onClick={() => removeLine(i)} className="justify-self-end rounded-lg p-2 text-ink-3 hover:bg-bad-soft hover:text-bad" aria-label={`Supprimer la ligne ${i + 1}`}>
+                    <button type="button" onClick={() => removeLine(i)} className="justify-self-end rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-bad-soft hover:text-bad" aria-label={`Supprimer la ligne ${i + 1}`}>
                       <Trash2 size={15} aria-hidden />
                     </button>
                   </li>

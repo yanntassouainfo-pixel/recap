@@ -18,7 +18,7 @@ export function GoalDialog({ goal, activities, currency }: { goal?: GoalData; ac
       title={goal ? `Modifier l'objectif` : "Nouvel objectif"}
       description="Un objectif chiffré se suit automatiquement à partir de vos opérations. Les montants sont saisis dans votre devise de référence."
       action={saveGoal}
-      triggerClassName={goal ? "rounded-lg p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("primary", "sm")}
+      triggerClassName={goal ? "rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("primary", "sm")}
       ariaLabel={goal ? `Modifier l'objectif ${goal.label}` : undefined}
       trigger={goal ? <Pencil size={15} /> : <><Plus size={15} /> Nouvel objectif</>}>
       {(state) => <GoalFields goal={goal} activities={activities} currency={currency} values={state.values} errors={state.fieldErrors ?? {}} />}
@@ -73,11 +73,11 @@ export function GoalActions({ goal, activities, currency }: { goal: GoalData; ac
     <div className="flex items-center gap-0.5">
       <GoalDialog goal={goal} activities={activities} currency={currency} />
       <ConfirmActionButton run={() => setGoalActive(goal.id, !goal.active)} done={goal.active ? "Objectif désactivé." : "Objectif réactivé."}
-        className="rounded-lg p-2 text-ink-3 hover:bg-surface-3 hover:text-ink">
+        className="rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-surface-3 hover:text-ink">
         {goal.active ? <Pause size={15} aria-hidden /> : <Play size={15} aria-hidden />}<span className="sr-only">{goal.active ? "Désactiver" : "Réactiver"}</span>
       </ConfirmActionButton>
       <ConfirmActionButton run={() => deleteGoal(goal.id)} confirm={`Supprimer définitivement l'objectif « ${goal.label} » ?`} done="Objectif supprimé."
-        className="rounded-lg p-2 text-ink-3 hover:bg-bad-soft hover:text-bad">
+        className="rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-bad-soft hover:text-bad">
         <Trash2 size={15} aria-hidden /><span className="sr-only">Supprimer</span>
       </ConfirmActionButton>
     </div>

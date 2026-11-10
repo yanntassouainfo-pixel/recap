@@ -20,7 +20,8 @@ const variants: Record<Variant, string> = {
   ghost: "text-ink-2 hover:text-ink hover:bg-surface-3",
   danger: "bg-surface text-bad border border-line-2 hover:bg-bad-soft hover:border-bad/40",
 };
-const sizes = { sm: "h-8 px-3 text-[13px] gap-1.5 rounded-lg", md: "h-9.5 px-4 text-[13.5px] gap-2 rounded-[10px]", lg: "h-11 px-5 text-[14.5px] gap-2 rounded-xl" };
+// Mobile d'abord : boutons plus hauts au doigt (≈ 40-44 px), taille compacte à partir de sm.
+const sizes = { sm: "h-10 sm:h-8 px-3 text-[13px] gap-1.5 rounded-lg", md: "h-11 sm:h-9.5 px-4 text-[13.5px] gap-2 rounded-[10px]", lg: "h-11 px-5 text-[14.5px] gap-2 rounded-xl" };
 
 export function buttonClass(variant: Variant = "secondary", size: keyof typeof sizes = "md", extra?: string) {
   return cx(
@@ -241,7 +242,7 @@ export function Segmented({ items, active }: { items: { key: string; label: stri
     <div className="inline-flex rounded-[10px] bg-surface-3 p-0.5" role="tablist">
       {items.map((i) => (
         <Link key={i.key} href={i.href} scroll={false} role="tab" aria-selected={i.key === active}
-          className={cx("rounded-lg px-3 py-1.5 text-[12.5px] font-medium transition-colors", i.key === active ? "bg-surface text-ink shadow-card" : "text-ink-3 hover:text-ink-2")}>
+          className={cx("rounded-lg px-3 py-2.5 sm:py-1.5 text-[12.5px] font-medium transition-colors", i.key === active ? "bg-surface text-ink shadow-card" : "text-ink-3 hover:text-ink-2")}>
           {i.label}
         </Link>
       ))}
@@ -262,7 +263,7 @@ export function Progress({ value, tone = "accent", label }: { value: number; ton
 }
 
 export function Kbd({ children }: { children: ReactNode }) {
-  return <kbd className="rounded border border-line-2 bg-surface-2 px-1 py-px font-mono text-[10.5px] text-ink-3">{children}</kbd>;
+  return <kbd className="rounded border border-line-2 bg-surface-2 px-1 py-px font-mono text-[11px] text-ink-3">{children}</kbd>;
 }
 
 export function Notice({ tone = "info", title, children, action }: { tone?: "info" | "warn" | "bad" | "good"; title?: ReactNode; children?: ReactNode; action?: ReactNode }) {
@@ -297,7 +298,7 @@ export function BigMoney({ value, currency, className, sign }: { value: number; 
   return (
     <span className={cx("inline-flex items-baseline whitespace-nowrap tabular", className)}>
       {num}
-      {sym && <span className="ml-[0.22em] text-[0.42em] font-medium tracking-normal text-ink-3">{sym}</span>}
+      {sym && <span className="ml-[0.22em] text-[length:max(0.42em,11px)] font-medium tracking-normal text-ink-3">{sym}</span>}
     </span>
   );
 }

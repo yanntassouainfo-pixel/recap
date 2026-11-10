@@ -178,3 +178,12 @@ function afterSent(userId: string, email: typeof schema.emails.$inferSelect, att
     to: email.to, cc: email.cc, subject: email.subject, providerMessageId: email.providerMessageId, sentAt: email.sentAt, attachments: attachmentCount,
   });
 }
+
+/** Email système (réinitialisation du mot de passe…) : expéditeur SMTP_FROM, sinon le compte SMTP. */
+export async function sendSystemEmail(to: string, subject: string, text: string): Promise<boolean> {
+  const t = transport();
+  const from = process.env.SMTP_FROM?.trim() || process.env.SMTP_USER?.trim();
+  if (!t || !from) return false;
+  const r = await t.sendMail({ from: formatFrom("Recap", from), to, subject, text, attachments: [] });
+  return !!r?.messageId;
+}

@@ -111,7 +111,7 @@ export default async function StructuresPage({ searchParams }: { searchParams: P
                     <div className="ml-auto flex items-center gap-0.5 sm:ml-0 sm:mt-2">
                       <CompanyDialog variant="icon" company={c} />
                       <ConfirmActionButton run={archiveCompany.bind(null, c.id, !c.archived)} confirm={c.archived ? undefined : `Archiver « ${c.name} » ? Ses données sont conservées mais elle n'apparaît plus dans les vues.`}
-                        className="rounded-lg p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" done={c.archived ? "Structure réactivée." : "Structure archivée."}>
+                        className="rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" done={c.archived ? "Structure réactivée." : "Structure archivée."}>
                         {c.archived ? <ArchiveRestore size={15} aria-label="Réactiver" /> : <Archive size={15} aria-label="Archiver" />}
                       </ConfirmActionButton>
                     </div>
@@ -122,7 +122,7 @@ export default async function StructuresPage({ searchParams }: { searchParams: P
               <div className={cx("grid gap-0", !personal && "lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]")}>
                 {!personal && (
                   <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <h3 className="text-[13.5px] font-semibold">Activités <span className="font-normal text-ink-3">· marge sur 90 jours</span></h3>
                       <div className="flex gap-1"><BrandDialog companyId={c.id} /><ActivityDialog companyId={c.id} currency={c.currency} brands={brs} /></div>
                     </div>
@@ -133,7 +133,7 @@ export default async function StructuresPage({ searchParams }: { searchParams: P
                           <span key={b.id} className="inline-flex items-center gap-1 rounded-full bg-surface-3 py-0.5 pl-2.5 pr-1 text-ink-2">
                             {b.name}
                             <BrandDialog companyId={c.id} brand={b} />
-                            <ConfirmActionButton run={deleteBrand.bind(null, b.id)} confirm={`Supprimer l'enseigne « ${b.name} » ? Les activités et factures associées sont conservées.`} className="rounded-full px-1 text-ink-3 hover:text-bad" done="Enseigne supprimée.">×</ConfirmActionButton>
+                            <ConfirmActionButton run={deleteBrand.bind(null, b.id)} confirm={`Supprimer l'enseigne « ${b.name} » ? Les activités et factures associées sont conservées.`} className="rounded-full px-2.5 py-1 sm:px-1 sm:py-0 text-ink-3 hover:text-bad" done="Enseigne supprimée.">×</ConfirmActionButton>
                           </span>
                         ))}
                       </div>
@@ -159,7 +159,7 @@ export default async function StructuresPage({ searchParams }: { searchParams: P
                                 <div className="text-[11.5px] text-ink-3">marge {formatPercent(p?.marginRate)}</div>
                               </div>
                               <ActivityDialog companyId={c.id} currency={c.currency} brands={brs} activity={a} />
-                              <ConfirmActionButton run={archiveActivity.bind(null, a.id, !a.archived)} className="rounded-lg p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" done={a.archived ? "Activité réactivée." : "Activité archivée."}
+                              <ConfirmActionButton run={archiveActivity.bind(null, a.id, !a.archived)} className="rounded-lg p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" done={a.archived ? "Activité réactivée." : "Activité archivée."}
                                 confirm={a.archived ? undefined : `Archiver « ${a.name} » ? Son historique est conservé.`}>
                                 {a.archived ? <ArchiveRestore size={14} aria-label="Réactiver" /> : <Archive size={14} aria-label="Archiver" />}
                               </ConfirmActionButton>
@@ -191,7 +191,7 @@ export default async function StructuresPage({ searchParams }: { searchParams: P
                             </div>
                             <div className={cx("text-right text-[13.5px] font-medium tabular", (b?.balance ?? 0) < 0 && "text-bad")}>{b ? formatMoney(b.balance, a.currency) : "—"}</div>
                             <AccountDialog companies={companyOptions} account={a} today={today} />
-                            <ConfirmActionButton run={archiveAccount.bind(null, a.id, !a.archived)} className="rounded-lg p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" done={a.archived ? "Compte réactivé." : "Compte archivé."}
+                            <ConfirmActionButton run={archiveAccount.bind(null, a.id, !a.archived)} className="rounded-lg p-3 sm:p-1.5 text-ink-3 hover:bg-surface-3 hover:text-ink" done={a.archived ? "Compte réactivé." : "Compte archivé."}
                               confirm={a.archived ? undefined : `Archiver « ${a.name} » ? Il ne sera plus compté dans l'argent disponible.`}>
                               {a.archived ? <ArchiveRestore size={14} aria-label="Réactiver" /> : <Archive size={14} aria-label="Archiver" />}
                             </ConfirmActionButton>

@@ -125,14 +125,14 @@ export default async function DocumentsPage({ searchParams }: { searchParams: Pr
         <input type="hidden" name="usage" value={usage} />
         <div className="relative">
           <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-3" aria-hidden />
-          <input name="q" defaultValue={sp.q ?? ""} placeholder="Nom, mot-clé, client…" aria-label="Rechercher un document" className="field-input h-8 w-[220px] pl-8 text-[12.5px]" />
+          <input name="q" defaultValue={sp.q ?? ""} placeholder="Nom, mot-clé, client…" aria-label="Rechercher un document" className="field-input h-10 sm:h-8 w-[220px] pl-8 text-[12.5px]" />
         </div>
-        <select name="type" defaultValue={typeFilter} aria-label="Filtrer par type" className="field-input h-8 w-auto py-0 text-[12.5px]">
+        <select name="type" defaultValue={typeFilter} aria-label="Filtrer par type" className="field-input h-10 sm:h-8 w-auto py-0 text-[12.5px]">
           <option value="">Tous les types</option>
           {Object.entries(DOCUMENT_TYPES).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
         </select>
         {(usage === "client" || contactFilter) && (
-          <select name="contact" defaultValue={contactFilter} aria-label="Filtrer par client" className="field-input h-8 w-auto max-w-[220px] py-0 text-[12.5px]">
+          <select name="contact" defaultValue={contactFilter} aria-label="Filtrer par client" className="field-input h-10 sm:h-8 w-auto max-w-[220px] py-0 text-[12.5px]">
             <option value="">Tous les clients</option>
             {refs.contacts.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>

@@ -73,7 +73,7 @@ export function ThemeChoice() {
         const active = t?.pref === o.key;
         return (
           <button key={o.key} type="button" role="radio" aria-checked={active} onClick={() => setThemePref(o.key)}
-            className={cx("flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+            className={cx("flex items-center gap-1.5 rounded-lg px-3 py-2.5 sm:py-1.5 text-[12.5px] font-medium transition-colors",
               active ? "bg-surface text-ink shadow-card" : "text-ink-3 hover:text-ink-2")}>
             {o.icon}{o.label}
           </button>

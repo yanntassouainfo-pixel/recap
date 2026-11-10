@@ -79,9 +79,9 @@ export default async function ProfitabilityPage({ searchParams }: { searchParams
             <form className="flex items-center gap-1.5" action="/rentabilite">
               <input type="hidden" name="periode" value="perso" />
               {base !== "facture" && <input type="hidden" name="base" value={base} />}
-              <input type="date" name="du" defaultValue={period.key === "perso" ? period.from : ""} max={today} className="field-input h-8 w-[132px] px-2 text-[12.5px]" aria-label="Du" required />
-              <input type="date" name="au" defaultValue={period.key === "perso" ? period.to : ""} className="field-input h-8 w-[132px] px-2 text-[12.5px]" aria-label="Au" />
-              <button className={cx("h-8 rounded-lg px-2.5 text-[12.5px] font-medium hover:bg-surface-3", period.key === "perso" ? "bg-surface-3 text-ink" : "text-ink-2")}>Appliquer</button>
+              <input type="date" name="du" defaultValue={period.key === "perso" ? period.from : ""} max={today} className="field-input h-10 sm:h-8 w-[132px] px-2 text-[12.5px]" aria-label="Du" required />
+              <input type="date" name="au" defaultValue={period.key === "perso" ? period.to : ""} className="field-input h-10 sm:h-8 w-[132px] px-2 text-[12.5px]" aria-label="Au" />
+              <button className={cx("h-10 sm:h-8 rounded-lg px-2.5 text-[12.5px] font-medium hover:bg-surface-3", period.key === "perso" ? "bg-surface-3 text-ink" : "text-ink-2")}>Appliquer</button>
             </form>
           </div>
         }

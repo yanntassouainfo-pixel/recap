@@ -18,7 +18,7 @@ export function AllocationRuleDialog({ rule, companies, defaultCompanyId }: { ru
       title={rule ? `Modifier la règle « ${rule.name} »` : "Nouvelle règle de répartition"}
       description="Une règle répartit des frais communs (loyer, abonnements, assistante…) entre les activités d'une même structure. Choisissez-la ensuite sur les dépenses concernées."
       action={saveAllocationRule} size="lg"
-      triggerClassName={rule ? "rounded-lg p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("secondary", "sm")}
+      triggerClassName={rule ? "rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-surface-3 hover:text-ink" : buttonClass("secondary", "sm")}
       ariaLabel={rule ? `Modifier la règle ${rule.name}` : undefined}
       trigger={rule ? <Pencil size={15} /> : <><Plus size={15} /> Nouvelle règle</>}>
       {(state) => <RuleFields rule={rule} companies={companies} defaultCompanyId={defaultCompanyId} values={state.values} errors={state.fieldErrors ?? {}} />}
@@ -89,7 +89,7 @@ function RuleFields({ rule, companies, defaultCompanyId, values, errors }: { rul
                   <label htmlFor={`share-${a.id}`} className="min-w-0 flex-1 truncate text-[13px]">{a.name}</label>
                   <div className="relative w-24">
                     <Input id={`share-${a.id}`} name={`share_${a.id}`} inputMode="decimal" value={shares[a.id] ?? ""} placeholder="0"
-                      onChange={(e) => setShares((s) => ({ ...s, [a.id]: e.target.value }))} className="h-8 pr-7 text-right tabular" />
+                      onChange={(e) => setShares((s) => ({ ...s, [a.id]: e.target.value }))} className="h-10 sm:h-8 pr-7 text-right tabular" />
                     <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[12px] text-ink-3">%</span>
                   </div>
                 </li>
@@ -108,7 +108,7 @@ export function DeleteRuleButton({ rule, usage }: { rule: RuleData; usage: numbe
   return (
     <ConfirmActionButton run={() => deleteAllocationRule(rule.id)} done="Règle supprimée."
       confirm={`Supprimer la règle « ${rule.name} » ?${usage > 0 ? ` ${usage} dépense(s) ou charge(s) récurrente(s) qui l'utilisent redeviendront non affectées (elles ne sont pas supprimées).` : ""}`}
-      className="rounded-lg p-2 text-ink-3 hover:bg-bad-soft hover:text-bad">
+      className="rounded-lg p-3 sm:p-2 text-ink-3 hover:bg-bad-soft hover:text-bad">
       <Trash2 size={15} aria-hidden /><span className="sr-only">Supprimer la règle {rule.name}</span>
     </ConfirmActionButton>
   );

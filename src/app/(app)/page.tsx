@@ -92,9 +92,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <Segmented items={PERIODS.map((p) => ({ key: p.key, label: p.label, href: periodHref(p.key) }))} active={period.key} />
           <form className="hidden items-center gap-1.5 xl:flex" action="/">
             <input type="hidden" name="periode" value="custom" />
-            <input type="date" name="du" defaultValue={period.key === "custom" ? period.from : ""} className="field-input h-8 w-[132px] px-2 text-[12.5px]" aria-label="Du" />
-            <input type="date" name="au" defaultValue={period.key === "custom" ? period.to : ""} className="field-input h-8 w-[132px] px-2 text-[12.5px]" aria-label="Au" />
-            <button className="h-8 rounded-lg px-2.5 text-[12.5px] font-medium text-ink-2 hover:bg-surface-3">OK</button>
+            <input type="date" name="du" defaultValue={period.key === "custom" ? period.from : ""} className="field-input h-10 sm:h-8 w-[132px] px-2 text-[12.5px]" aria-label="Du" />
+            <input type="date" name="au" defaultValue={period.key === "custom" ? period.to : ""} className="field-input h-10 sm:h-8 w-[132px] px-2 text-[12.5px]" aria-label="Au" />
+            <button className="h-10 sm:h-8 rounded-lg px-2.5 text-[12.5px] font-medium text-ink-2 hover:bg-surface-3">OK</button>
           </form>
         </div>
       </header>
@@ -256,14 +256,14 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           <CardHeader title="Prochaines échéances" description="Dépenses prévues et charges récurrentes" action={<Link href="/depenses?vue=a-venir" className="text-[12.5px] font-medium text-ink-2 hover:text-ink">Tout voir</Link>} />
           {upcoming.length === 0 ? (
             <EmptyState compact icon={<CalendarClock size={18} />} title="Aucune échéance à 30 jours" description="Ajoutez vos charges récurrentes (loyer, abonnements…) pour les anticiper automatiquement."
-              action={<QuickButton kind="recurring" className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line-2 bg-surface px-3 text-[13px] font-medium"><Plus size={14} /> Charge récurrente</QuickButton>} />
+              action={<QuickButton kind="recurring" className="inline-flex h-10 sm:h-8 items-center gap-1.5 rounded-lg border border-line-2 bg-surface px-3 text-[13px] font-medium"><Plus size={14} /> Charge récurrente</QuickButton>} />
           ) : (
             <ul className="divide-y divide-line">
               {upcoming.slice(0, 5).map((u) => (
                 <li key={u.key} className="flex items-center gap-3 px-5 py-3">
                   <div className={cx("flex w-11 shrink-0 flex-col items-center rounded-lg py-1", u.late ? "bg-warn-soft text-warn" : "bg-surface-3 text-ink-2")}>
                     <span className="text-[15px] font-semibold leading-none tabular">{u.originalDate.slice(8, 10)}</span>
-                    <span className="text-[10.5px] leading-tight">{formatDate(u.originalDate, "day").split(" ")[1]}</span>
+                    <span className="text-[11px] leading-tight">{formatDate(u.originalDate, "day").split(" ")[1]}</span>
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-[13.5px] font-medium">{u.label}</div>

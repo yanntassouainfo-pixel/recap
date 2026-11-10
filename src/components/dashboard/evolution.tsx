@@ -23,7 +23,7 @@ export function EvolutionCard({ flows, history, projection, currency, threshold,
         <div className="inline-flex rounded-[10px] bg-surface-3 p-0.5" role="tablist">
           {[["flows", "Entrées & sorties"], ["cash", "Trésorerie"]].map(([k, l]) => (
             <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k as "flows" | "cash")}
-              className={cx("rounded-lg px-3 py-1.5 text-[12.5px] font-medium", tab === k ? "bg-surface text-ink shadow-card" : "text-ink-3 hover:text-ink-2")}>{l}</button>
+              className={cx("rounded-lg px-3 py-2.5 sm:py-1.5 text-[12.5px] font-medium", tab === k ? "bg-surface text-ink shadow-card" : "text-ink-3 hover:text-ink-2")}>{l}</button>
           ))}
         </div>
       </div>

@@ -96,7 +96,7 @@ export default async function TransactionsPage({ searchParams }: { searchParams:
                 const on = p.from === f.from && p.to === f.to;
                 return (
                   <Link key={p.label} href={href({ du: p.from, au: p.to, page: null })} scroll={false} aria-current={on ? "true" : undefined}
-                    className={cx("rounded-full border px-3 py-1 text-[12.5px] font-medium", on ? "border-ink bg-ink text-bg" : "border-line-2 text-ink-2 hover:text-ink")}>
+                    className={cx("rounded-full border px-3 py-2 sm:py-1 text-[12.5px] font-medium", on ? "border-ink bg-ink text-bg" : "border-line-2 text-ink-2 hover:text-ink")}>
                     {p.label}
                   </Link>
                 );
